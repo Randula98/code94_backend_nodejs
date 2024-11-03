@@ -12,8 +12,6 @@ const uploadImages = async (req, res) => {
 
 const deleteImage = async (req, res) => {
     try {
-        console.log('req.body:', req.body);
-        console.log('imageUrl:', req.body.imageUrl);
         const imageUrl = decodeURIComponent(req.body.imageUrl);
         await UploadService.deleteImage(imageUrl);
         res.status(200).json({ message: 'Image deleted successfully' });
