@@ -50,10 +50,34 @@ const login = async (req, res) => {
     }
 }
 
+const getFavorites = async (req, res) => {
+    try {
+        const favorites = await UserServices.getFavorites(req.params.id);
+        res.status(200).json(favorites);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'An error occurred', error });
+    }
+}
+
+const updateFavorites = async (req, res) => {
+    try {
+        const favorites = req.body;
+        const updatedFavorites = await UserServices.updateFavorites(req.params.id, favorites);
+        res.status(200).json(updatedFavorites);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'An error occurred', error });
+    }
+}
+
 export default {
     getUser,
     createUser,
     updateUser,
     deleteUser,
-    login
+    login,
+    getFavorites,
+    updateFavorites
 };

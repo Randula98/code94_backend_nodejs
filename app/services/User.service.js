@@ -36,10 +36,20 @@ const login = async (username, password) => {
     }
 }
 
+const getFavorites = async (id) => {
+    return await User.findById(id).populate('favoriteProducts').select('favoriteProducts');
+}
+
+const updateFavorites = async (id, favorites) => {
+    return await User.findByIdAndUpdate(id, { favoriteProducts: favorites }, { new: true });
+}
+
 export default {
     getUser,
     createUser,
     updateUser,
     deleteUser,
-    login
+    login,
+    getFavorites,
+    updateFavorites
 };

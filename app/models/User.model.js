@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  favoiriteProducts: {
+  favoriteProducts: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "Product",
   },
