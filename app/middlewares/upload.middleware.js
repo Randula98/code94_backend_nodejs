@@ -1,4 +1,3 @@
-
 import multer from 'multer';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,7 +16,7 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 5 * 1024 * 1024,
+        fileSize: 5 * 1024 * 1024, // Limit file size to 5MB
     },
     fileFilter: (req, file, cb) => {
         const filetypes = /jpeg|jpg|png|gif/;
@@ -29,6 +28,8 @@ const upload = multer({
         }
         cb(new Error('Error: File type not supported!'));
     }
-}).array('images', 5);
+});
 
-export { upload };
+const uploadMiddleware = upload.array('images', 5);
+
+export { uploadMiddleware as upload }; 
