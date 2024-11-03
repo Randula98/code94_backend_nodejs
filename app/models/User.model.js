@@ -12,20 +12,24 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  favoiriteProducts: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Product",
+  },
 }, {
-    timestamps: {
-        createdAt: 'createdOn',
-        updatedAt: 'updatedOn'
-    }
+  timestamps: {
+    createdAt: 'createdOn',
+    updatedAt: 'updatedOn'
+  }
 });
 
 // Hash the password before saving the user model
 UserSchema.pre("save", function (next) {
   if (!this.isModified("password")) return next();
   bcrypt.hash(this.password, 10, (err, passwordHash) => {
-      if (err) return next(err);
-      this.password = passwordHash;
-      next();
+    if (err) return next(err);
+    this.password = passwordHash;
+    next();
   });
 });
 
@@ -33,24 +37,24 @@ UserSchema.pre("save", function (next) {
 UserSchema.pre("findOneAndUpdate", function (next) {
   if (!this._update.password) return next();
   bcrypt.hash(this._update.password, 10, (err, passwordHash) => {
-      if (err) return next(err);
-      this._update.password = passwordHash;
-      next();
+    if (err) return next(err);
+    this._update.password = passwordHash;
+    next();
   });
 });
 
 // Compare the password
 UserSchema.methods.comparePassword = function (password) {
   return new Promise((resolve, reject) => {
-      bcrypt.compare(password, this.password, (err, isMatch) => {
-          if (err) {
-              return reject(err);
-          }
-          if (!isMatch) {
-              return resolve(false);
-          }
-          resolve(this);
-      });
+    bcrypt.compare(password, this.password, (err, isMatch) => {
+      if (err) {
+        return reject(err);
+      }
+      if (!isMatch) {
+        return resolve(false);
+      }
+      resolve(this);
+    });
   });
 }
 
