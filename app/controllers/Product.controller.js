@@ -62,11 +62,27 @@ const deleteProduct = async (req, res) => {
     }
 }
 
+const searchProducts = async (req, res) => {
+    try {
+        const query = req.query.q;
+        if (!query) {
+            return res.status(400).json({ message: 'Query parameter is required' });
+        }
+
+        const products = await ProductServices.searchProducts(query);
+        res.status(200).json(products);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'An error occurred', error });
+    }
+}
+
 export default {
     getAllProducts,
     getProduct,
     getProductsByUser,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    searchProducts
 }

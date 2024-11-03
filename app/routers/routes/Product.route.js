@@ -10,5 +10,6 @@ router.get('/user/:userId', verifyToken, ProductController.getProductsByUser);
 router.post('/', verifyToken, ProductController.createProduct);
 router.put('/:id', verifyToken, ProductController.updateProduct);
 router.delete('/:id', verifyToken, ProductController.deleteProduct);
+router.get('/search/param', verifyToken, ProductController.searchProducts);
 
 export default router;

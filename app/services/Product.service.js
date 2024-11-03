@@ -24,11 +24,23 @@ const deleteProduct = async (id) => {
     return await Product.findByIdAndDelete(id);
 }
 
+const searchProducts = async (query) => {
+    return await Product.find({
+        $or: [
+            { sku: { $regex: query, $options: 'i' } },
+            { name: { $regex: query, $options: 'i' } },
+            { description: { $regex: query, $options: 'i' } }
+        ]
+    });
+}
+
+
 export default {
     getProducts,
     getProduct,
     getProductsByUser,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    searchProducts
 };
