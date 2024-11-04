@@ -1,4 +1,6 @@
 import Product from '../models/Product.model.js';
+import User from "../models/User.model.js";
+import UploadService from './Upload.service.js';
 
 const getProducts = async () => {
     return await Product.find();
@@ -21,8 +23,23 @@ const updateProduct = async (id, product) => {
 }
 
 const deleteProduct = async (id) => {
-    return await Product.findByIdAndDelete(id);
-}
+    try {
+        const product = await Product.findById(id);
+        if (!product) {
+            throw new Error('Product not found');
+        }
+        await User.updateMany(
+            { favoriteProducts: id },
+            { $pull: { favoriteProducts: id } }
+        );
+        for (const imageUrl of product.images) {
+            await UploadService.deleteImage(imageUrl);
+        }
+        return await Product.findByIdAndDelete(id);
+    } catch (error) {
+        throw new Error(`Failed to delete product: ${error.message}`);
+    }
+};
 
 const searchProducts = async (query) => {
     return await Product.find({

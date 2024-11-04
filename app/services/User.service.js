@@ -1,4 +1,4 @@
-import User from "../models/User.Model.js";
+import User from "../models/User.model.js";
 import { createToken } from "../middlewares/user.middleware.js";
 
 const getUser = async (id) => {
